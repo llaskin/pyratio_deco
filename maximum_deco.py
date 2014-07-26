@@ -1,4 +1,6 @@
-# A python implementation of Ratio Deco
+#!/usr/bin/env python
+
+''' A python implementation of Ratio Deco '''
 
 import math, argparse
 
