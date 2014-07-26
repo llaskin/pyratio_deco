@@ -6,12 +6,14 @@ import math, argparse
 
 depth = ''
 bottom_time = ''
+saturation = ''
 
 def arguments():
-	global depth, bottom_time
+	global depth, bottom_time, saturation
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-t', '--bt', help="Bottom Time", required=True)
 	parser.add_argument('-d', '--depth' ,help="Depth", required=True)
+	parser.add_argument('--nosaturation', help="Disable saturation of tissues", nargs='?', default=False)
 	
 	args = vars(parser.parse_args())
 
@@ -19,8 +21,12 @@ def arguments():
 		bottom_time = args['bt']
 	if args['depth']:
 		depth = args['depth']
+	if args['nosaturation'] == None:
+		saturation = False
+	else:
+		saturation = True
 
-	return depth, bottom_time
+	return depth, bottom_time, saturation
 	
 arguments()
 
@@ -85,9 +91,10 @@ if bottom_time <= ndl(depth):
 		print "Stop", first_stop, "feet for one minute."
 		first_stop = first_stop - 10
 elif depth <= 400:
-	if int(math.ceil(o2_deco)) >= 150:
-		print "Your O2 Segment is 150 minutes, therefore reached max deco and will not incur any more deco."
-		o2_deco = 150
+	if saturation:
+		if int(math.ceil(o2_deco)) >= 150:
+			print "Your O2 Segment is 150 minutes, therefore reached max deco and will not incur any more deco."
+			o2_deco = 150
 	print "Dive Details:"
 	print "Depth:", depth, "feet"
 	print "Bottom Time:", int(math.ceil(bottom_time)), "minutes"
