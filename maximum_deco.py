@@ -1,9 +1,26 @@
 # A python implementation of Ratio Deco
 
-import math
+import math, argparse
 
-depth = 200
-bottom_time = 50
+depth = ''
+bottom_time = ''
+
+def arguments():
+	global depth, bottom_time
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-t', '--bt', help="Bottom Time", required=True)
+	parser.add_argument('-d', '--depth' ,help="Depth", required=True)
+	
+	args = vars(parser.parse_args())
+
+	if args['bt']:
+		bottom_time = args['bt']
+	if args['depth']:
+		depth = args['depth']
+
+	return depth, bottom_time
+	
+arguments()
 
 depth = int(depth)
 bottom_time = int(bottom_time)
