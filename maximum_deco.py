@@ -100,10 +100,10 @@ elif depth <= 400:
 		total_deco = o2_deco + seventy_segment
 	if first_stop >= 100 <= 140:
 		onetwenty_segment = int(math.ceil(seventy_segment * .5))
-		print "120 Segment:", onetwenty_segment, "minutes."
+		print "120 Segment:", onetwenty_segment, "minutes"
 		total_deco = total_deco + onetwenty_segment
 	if first_stop >= 150 <= 190:
 		oneninety_segment = int(math.ceil(onetwenty_segment * .5))
-		print "190 Segment:", oneninety_segment, "minutes."
+		print "190 Segment:", oneninety_segment, "minutes"
 		total_deco = total_deco + oneninety_segment
 	print "Your total deco time is", int(total_deco), "minutes."
