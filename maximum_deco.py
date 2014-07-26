@@ -98,7 +98,7 @@ elif depth <= 400:
 	print "Dive Details:"
 	print "Depth:", depth, "feet"
 	print "Bottom Time:", int(math.ceil(bottom_time)), "minutes"
-        print "First Deco Stop:", first_stop, "feet"
+	print "First Deco Stop:", first_stop, "feet"
 	print "O2 Segment:", int(math.ceil(o2_deco)), "minutes"
 	total_deco = int(o2_deco)
 	if first_stop >= 30 <= 90:
