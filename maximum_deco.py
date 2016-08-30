@@ -50,7 +50,7 @@ def ndl(depth):
     return no_deco
 
 
-def o2_deco(depth, bottom_time):
+def o2_segment(depth, bottom_time):
     ascent_time = (depth * .5) / 10
     if depth <= 100:
         o2_segment = float(.5 * (bottom_time - ndl(depth) + ascent_time))
@@ -68,33 +68,35 @@ def o2_deco(depth, bottom_time):
         o2_segment = 3 * bottom_time
     else:
         o2_segment = None
-        print("Error: The depth of {} is out of the scope of this app.")
+        print("Error: Depth of {} is out of the scope of this app".format(
+            depth))
     return o2_segment
+
+
+def dive_details(depth, bottom_time):
+    print("***************************")
+    print("Dive Details:")
+    print("Depth: {} feet".format(depth))
+    print("Bottom Time: {} minutes".format(int(math.ceil(bottom_time))))
+    print("***************************")
+
 
 if __name__ == '__main__':
     args = arguments()
-    depth = int(args['depth'])
-    bottom_time = int(args['bottom_time'])
-    o2_deco = o2_deco(depth, bottom_time)
-    ndl(depth)
-    first_stop = math.floor((depth * float(.5)) / 10) * 10
-    first_stop = int(first_stop)
+    o2_deco = o2_segment(int(args['depth']), int(args['bottom_time']))
+    first_stop = int(math.floor((int(args['depth']) * float(.5)) / 10) * 10)
 
-    if bottom_time <= ndl(depth):
-        print("Dive Details:")
-        print("Depth: {} feet".format(depth))
-        print("Bottom Time: {} minutes".format(int(math.ceil(bottom_time))))
+    if int(args['bottom_time']) <= ndl(int(args['depth'])):
+        dive_details(int(args['depth']), int(args['bottom_time']))
         while first_stop > 0:
-            print("Stop {} feet for one minute.".format(first_stop))
+            print("Stop: {} feet for one minute".format(first_stop))
             first_stop = first_stop - 10
-    elif depth <= 400:
+    elif int(args['depth']) <= 400:
         if args['nosaturation']:
             if int(math.ceil(o2_deco)) >= 150:
-                print("INFO: Saturation reached.")
+                print("INFO: Saturation reached")
                 o2_deco = 150
-        print("Dive Details:")
-        print("Depth: {} feet".format(depth))
-        print("Bottom Time: {} minutes".format(int(math.ceil(bottom_time))))
+        dive_details(int(args['depth']), int(args['bottom_time']))
         print("First Deco Stop: {} feet".format(first_stop))
         print("O2 Segment: {} minutes".format(int(math.ceil(o2_deco))))
         total_deco = int(o2_deco)
