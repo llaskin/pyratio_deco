@@ -2,7 +2,7 @@
 
 """ A python implementation of Ratio Deco """
 
-from lib.deco import calc_deco
+from rdlib.deco import calc_deco
 
 import argparse
 

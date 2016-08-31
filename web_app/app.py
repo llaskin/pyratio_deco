@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from lib.deco import calc_deco
+from rdlib.deco import calc_deco
 
 from flask import Flask
 from flask import request
