@@ -65,3 +65,26 @@ Or, it can be run natively.
 sudo pip install -r requirements.txt
 ./web_app/app.py
 ```
+### REST API
+
+There is a built in Rest API. You can feed the API depth and bottom_time, and it will return the dive profile.
+
+```
+$curl -H "Content-type: application/json" -X POST -d '{"depth": 100, "bottom_time": 30}' localhost:5000/api
+
+{
+    "bottom_time": 30,
+    "depth": 100,
+    "first_stop": 50,
+    "minimum_deco": [
+        10,
+        20,
+        30,
+        40,
+        50
+    ],
+    "nosaturation": true,
+    "total_deco": 5
+}
+```
+
