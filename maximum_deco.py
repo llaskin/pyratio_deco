@@ -2,7 +2,8 @@
 
 """ A python implementation of Ratio Deco """
 
-import math
+from lib.deco import calc_deco
+
 import argparse
 
 
@@ -26,90 +27,29 @@ def arguments():
     return vars(parser.parse_args())
 
 
-def ndl(depth):
-    if depth <= 50:
-        no_deco = 150
-    elif depth <= 60:
-        no_deco = 70
-    elif depth <= 70:
-        no_deco = 60
-    elif depth <= 80:
-        no_deco = 40
-    elif depth <= 90:
-        no_deco = 35
-    elif depth <= 100:
-        no_deco = 30
-    elif depth <= 110:
-        no_deco = 25
-    elif depth <= 120:
-        no_deco = 20
-    elif depth <= 130:
-        no_deco = 15
-    else:
-        no_deco = None
-    return no_deco
-
-
-def o2_segment(depth, bottom_time):
-    ascent_time = (depth * .5) / 10
-    if depth <= 100:
-        o2_segment = float(.5 * (bottom_time - ndl(depth) + ascent_time))
-    elif depth <= 150:
-        o2_segment = .5 * bottom_time
-    elif depth <= 200:
-        o2_segment = 1 * bottom_time
-    elif depth <= 250:
-        o2_segment = 1.2 * bottom_time
-    elif depth <= 300:
-        o2_segment = 1.5 * bottom_time
-    elif depth <= 350:
-        o2_segment = 2.2 * bottom_time
-    elif depth <= 400:
-        o2_segment = 3 * bottom_time
-    else:
-        o2_segment = None
-        print("Error: Depth of {} is out of the scope of this app".format(
-            depth))
-    return o2_segment
-
-
-def dive_details(depth, bottom_time):
-    print("***************************")
-    print("Dive Details:")
-    print("Depth: {} feet".format(depth))
-    print("Bottom Time: {} minutes".format(int(math.ceil(bottom_time))))
-    print("***************************")
-
-
 if __name__ == '__main__':
     args = arguments()
-    o2_deco = o2_segment(int(args['depth']), int(args['bottom_time']))
-    first_stop = int(math.floor((int(args['depth']) * float(.5)) / 10) * 10)
-
-    if int(args['bottom_time']) <= ndl(int(args['depth'])):
-        dive_details(int(args['depth']), int(args['bottom_time']))
-        while first_stop > 0:
-            print("Stop: {} feet for one minute".format(first_stop))
-            first_stop = first_stop - 10
-    elif int(args['depth']) <= 400:
-        if args['nosaturation']:
-            if int(math.ceil(o2_deco)) >= 150:
-                print("INFO: Saturation reached")
-                o2_deco = 150
-        dive_details(int(args['depth']), int(args['bottom_time']))
-        print("First Deco Stop: {} feet".format(first_stop))
-        print("O2 Segment: {} minutes".format(int(math.ceil(o2_deco))))
-        total_deco = int(o2_deco)
-        if first_stop >= 30 <= 90:
-            print("70 Segment: {} minutes".format(int(o2_deco)))
-            total_deco = o2_deco + int(o2_deco)
-        if first_stop >= 100 <= 140:
-            print("120 Segment: {} minutes".format(
-                int(math.ceil(int(o2_deco) * .5))))
-            total_deco = total_deco + int(math.ceil(int(o2_deco) * .5))
-        if first_stop >= 150 <= 190:
-            print("190 Segment: {} minutes".format(
-                int(math.ceil(int(math.ceil(int(o2_deco) * .5)) * .5))))
-            total_deco = total_deco + \
-                int(math.ceil(int(math.ceil(int(o2_deco) * .5))))
-        print("Total deco time is {} minutes.".format(int(total_deco)))
+    deco = calc_deco(depth=args['depth'],
+                     bottom_time=args['bottom_time'],
+                     nosaturation=args['nosaturation'])
+    print('***************************')
+    print('Dive Details:')
+    print('Depth: {} feet'.format(deco['depth']))
+    print('Bottom Time: {} minutes'.format(deco['bottom_time']))
+    if 'total_deco' in deco:
+        print('Total Deco: {} minutes'.format(deco['total_deco']))
+    print('***************************')
+    if 'out_of_range' in deco:
+        print(deco['out_of_range'])
+    if 'minimum_deco' in deco:
+        for item in deco['minimum_deco']:
+            print('Stop at {} for 1 minute'.format(item))
+    else:
+        if '20' in deco:
+            print(' 20 ft segment: {} minutes'.format(deco['20']))
+        if '70' in deco:
+            print(' 70 ft segment: {} minutes'.format(deco['70']))
+        if '120' in deco:
+            print('120 ft segment: {} minutes'.format(deco['120']))
+        if '190' in deco:
+            print('190 ft segment: {} minutes'.format(deco['190']))

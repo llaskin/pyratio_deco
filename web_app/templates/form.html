@@ -1,0 +1,72 @@
+<form class="form-horizontal" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Ratio Deco</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="depth">Depth (ft)</label>  
+  <div class="col-md-4">
+  <input id="depth" name="depth" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="bottom_time">Bottom Time</label>  
+  <div class="col-md-4">
+  <input id="bottom_time" name="bottom_time" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submit"></label>
+  <div class="col-md-4">
+    <button id="submit" name="submit" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textarea">Results</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="textarea" name="textarea" rows="20" cols="50">
+{% if deco %}
+***************************
+Dive Details:
+Depth: {{ deco['depth'] }} feet
+Bottom Time: {{ deco['bottom_time'] }} minutes
+Total Deco Time: {{ deco['total_deco'] }} minutes
+***************************
+{%-  if deco['out_of_range'] %}
+{{ deco['out_of_range'] }}
+{%  endif -%}
+{%  if deco['minimum_deco'] %}
+{%   for item in deco['minimum_deco'] %}
+Stop at {{ item }} foot for 1 minute
+{%-   endfor -%}
+{%  else %}
+{%    if deco['20'] %}
+ 20 ft segment: {{ deco['20'] }} minutes
+{%-    endif -%}
+{%    if deco['70'] %}
+ 70 ft segment: {{ deco['70'] }} minutes
+{%-    endif -%}
+{%    if deco['120'] %}
+120 ft segment: {{ deco['120'] }} minutes
+{%- endif -%}
+{%    if deco['190'] %}
+190 ft segment: {{ deco['190'] }} minutes
+{%-    endif -%}
+{%-  endif -%}
+{% endif %}
+    </textarea>
+  </div>
+</div>
+
+</fieldset>
+</form>
