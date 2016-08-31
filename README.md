@@ -52,3 +52,16 @@ O2 Segment: 30 minutes
 120 Segment: 15 minutes
 Total deco time is 75 minutes.
 ```
+
+## WEB APP
+
+The web app can be set up with docker-compose.
+```
+docker-compose up
+```
+
+Or, it can be run natively.
+```
+sudo pip install -r requirements.txt
+./web_app/app.py
+```
