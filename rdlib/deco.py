@@ -53,7 +53,7 @@ def calc_deco(depth, bottom_time, nosaturation):
     first_stop = int(math.floor((int(depth) * float(.5)) / 10) * 10)
     deco_data['first_stop'] = first_stop
 
-    if depth > 400:
+    if int(depth) > 400:
         deco_data['out_of_range'] = "Error: Depth is out of range."
 
     if int(bottom_time) <= ndl(int(depth)):
